@@ -1,11 +1,11 @@
-function ret = mutation(popsize,individuals,fmax,favg,lenchrome,LB,UB,pop,num,flag)
+function ret = mutation(popsize,individuals,fmax,favg,lenchrome,LB,UB,pop,num,flag3)
 	for i = 1:popsize
 		pick=rand;%随机产生变异概率
 		while pick==0
 			pick=rand;
 		end
 		index=ceil(pick*popsize);%取整被用来变异的染色体的编号
-		switch(flag)
+		switch(flag3)
 			case 1 
 				pm = SGA_mutation();%简单变异算子
 			case 2 
@@ -16,6 +16,10 @@ function ret = mutation(popsize,individuals,fmax,favg,lenchrome,LB,UB,pop,num,fl
 				pm = HIAGA_mutation(individuals,fmax,favg,index);%异性自适应变异算子
 			case 5 
 				pm = TIAGA_mutation(individuals,fmax,favg,index,num);%迭代自适应变异算子	
+		end
+        pick=0.1*rand;%产生一个随机概率 pm在0.01-0.05之间，直接用rand太大，导致种群基本无变异
+		while pick==0
+			pick=rand;
 		end
 		if pick >pm      %如果产生的随机概率大于变异概率，那么此轮循环不变异，类似于交叉，变异是小概率事件
 			continue;

@@ -1,4 +1,4 @@
-function ret = crossover(popsize,individuals,lenchrome,LB,UB,num,flag)
+function ret = crossover(popsize,individuals,lenchrome,LB,UB,num,flag2)
 	sumfitness = sum(individuals.fitness);
 	fmax = max(individuals.fitness);
     favg = sumfitness/popsize;
@@ -12,7 +12,7 @@ function ret = crossover(popsize,individuals,lenchrome,LB,UB,num,flag)
 		while pick==0
 			pick=rand;
 		end
-		switch(flag)
+		switch(flag2)
 			case 1 
 				pc = SGA_cross();%¼òµ¥½»²æËã×Ó
 			case 2 
