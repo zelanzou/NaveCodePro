@@ -41,6 +41,7 @@ fpk = 0;
 factor = 1.0;
 mbatt = [0;0;0]*pi/180;
 Cmb = a2mat(mbatt);
+k=1;
 %% Algorithm develop
 timebar(1,N, '姿态匹配与运动学约束多源融合算法.');
 for i = 2:N    
@@ -48,9 +49,10 @@ for i = 2:N
     fb = imu(i,4:6)' ;
     dt = imu(i,end) - imu(i-1,end);
     t(i) = imu(i,end);  
-    if i>index(1)*200 && i<index(2)*200
+    if k<length(index) && i>index(k)*200 && i<index(k+1)*200
         ftrsn = 0;
         fpk = 1;
+        k=k+1;
     else
         ftrsn = 1;
         % 传递主惯导的速度和位置
