@@ -100,6 +100,7 @@ hold on; plot(b(:,2),'go-','MarkerIndices',marker_idx,'Linewidth',2);
 hold on;plot(b(:,3),'r--','MarkerIndices',marker_idx,'Linewidth',2);grid on
 h2_axis = gca; 
 ylabel('\fontsize{10}\fontname{Times New Roman}k22')
+c= [k1mat(:,9),k2mat(:,9),repmat(ref(3,3),100,1)];
 subplot(313); h3 =plot( c(:,1),'bx-','MarkerIndices',marker_idx,'Linewidth',2);
 hold on; plot(c(:,2),'go-','MarkerIndices',marker_idx,'Linewidth',2);
 hold on;plot(c(:,3),'r--','MarkerIndices',marker_idx,'Linewidth',2);grid on
@@ -145,6 +146,7 @@ hold on;plot(a(:,3),'r--','MarkerIndices',marker_idx,'Linewidth',2) ;grid on
 h1_axis = gca; 
 legend('\fontsize{10}\fontname{宋体}两步修正法','\fontsize{10}\fontname{宋体}传统方法','\fontsize{10}\fontname{宋体}参考真值');
 ylabel('\fontsize{10}\fontname{Times New Roman}k21')
+b=[k1mat(:,7),k2mat(:,7),repmat(ref(3,1),100,1)];
 subplot(312); h2 =plot( b(:,1),'bx-','MarkerIndices',marker_idx,'Linewidth',2);
 hold on; plot(b(:,2),'go-','MarkerIndices',marker_idx,'Linewidth',2);
 hold on;plot(b(:,3),'r--','MarkerIndices',marker_idx,'Linewidth',2);grid on

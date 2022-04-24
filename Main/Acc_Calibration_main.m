@@ -1,5 +1,5 @@
 %% Algorithm Introduction
-%åŠ é€Ÿåº¦è®¡æ ‡å®šå®é™…å®éªŒ
+%¼ÓËÙ¶È¼Æ±ê¶¨Êµ¼ÊÊµÑé
 % Author :zouzelan
 % Version : V3.0 
 % Date :
@@ -8,10 +8,10 @@
 close all;                                           % close all figures
 clc;                                                 % clear cmd text
 clear ;                                              % clear all RAM
-disp('åŠ è®¡æ ‡å®šå®éªŒ');
+disp('¼Ó¼Æ±ê¶¨ÊµÑé');
 %% Load data
 % load ('C:\Users\zouzelan\Desktop\data\vsb0613.mat')
-load ('Data/imu1CaliMethodsPara.mat')
+load ('imu1CaliMethodsPara.mat')
 vsb = vsbib';
 
 g0 = 9.794281725483827;
@@ -29,30 +29,30 @@ Sx=Ks(1,1);  Sy=Ks(2,2);  Sz=Ks(3,3);
 %% Algorithm time
 
 %% Memory allocation
-bf=[];%ç¼“å­˜ç§ç¾¤æœ€ä½³é€‚åº”åº¦ï¼Œè®°å½•æ¯ä¸€ä»£è¿›åŒ–ä¸­æœ€å¥½çš„é€‚åº”åº¦å’Œå¹³å‡é€‚åº”åº¦ï¼Œå¯ä»¥ç”¨æ¥ç»˜å›¾åæ˜ æ˜¯å¦è¿‡æ—©æ”¶æ•›
-af=[];%ç¼“å­˜ç§ç¾¤å¹³å‡é€‚åº”é€‚åº”åº¦
+bf=[];%»º´æÖÖÈº×î¼ÑÊÊÓ¦¶È£¬¼ÇÂ¼Ã¿Ò»´ú½ø»¯ÖĞ×îºÃµÄÊÊÓ¦¶ÈºÍÆ½¾ùÊÊÓ¦¶È£¬¿ÉÒÔÓÃÀ´»æÍ¼·´Ó³ÊÇ·ñ¹ıÔçÊÕÁ²
+af=[];%»º´æÖÖÈºÆ½¾ùÊÊÓ¦ÊÊÓ¦¶È
 navs = [];
 best = [];
 fit = [];
 chrome = [];
 %% Initial data 
-popsize = 50;%ç§ç¾¤å¤§å°
-gensize = 100;%è¿­ä»£æ¬¡æ•°
-lenchrome = 9;%æŸ“è‰²ä½“ä¸ªæ•°å³å‚æ•°ä¸ªæ•°,9ä¸ª
+popsize = 50;%ÖÖÈº´óĞ¡
+gensize = 100;%µü´ú´ÎÊı
+lenchrome = 9;%È¾É«Ìå¸öÊı¼´²ÎÊı¸öÊı,9¸ö
 
-LB=[Bx-0.3,By-0.3,Bz-0.3,Sx-0.01,Sy-0.01,Sz-0.01,-0.2,-0.2,-0.2]';   % å‚æ•°ä¸‹ç•Œ
-UB=[Bx+0.3,By+0.3,Bz+0.3,Sx+0.01,Sy+0.01,Sz+0.01,0.2,0.2,0.2]';   % å‚æ•°ä¸Šç•Œ
+LB=[Bx-0.3,By-0.3,Bz-0.3,Sx-0.01,Sy-0.01,Sz-0.01,-0.2,-0.2,-0.2]';   % ²ÎÊıÏÂ½ç
+UB=[Bx+0.3,By+0.3,Bz+0.3,Sx+0.01,Sy+0.01,Sz+0.01,0.2,0.2,0.2]';   % ²ÎÊıÉÏ½ç
 
 %% Function index
 
 %% Algorithm develop
 
-for k = 1:1   %å¯ä»¥è®¾ç½®é‡å¤æ•°
+for k = 1:1   %¿ÉÒÔÉèÖÃÖØ¸´Êı
     for i=1:popsize
          for m= 1:popsize
-            individuals.chrome(m,:) = code(lenchrome,LB,UB,2);%éšæœºäº§ç”Ÿ
-            x=individuals.chrome(m,:);%éšæœºç§ç¾¤çš„æŸ“è‰²ä½“ï¼ˆå‚æ•°ï¼‰
-            individuals.fitness(m)=searchfun(x,vsb,g0,2);%è®¡ç®—æŸ“è‰²ä½“é€‚åº”åº¦
+            individuals.chrome(m,:) = code(lenchrome,LB,UB,2);%Ëæ»ú²úÉú
+            x=individuals.chrome(m,:);%Ëæ»úÖÖÈºµÄÈ¾É«Ìå£¨²ÎÊı£©
+            individuals.fitness(m)=searchfun(x,vsb,g0,2);%¼ÆËãÈ¾É«ÌåÊÊÓ¦¶È
          end
          [F,code_index] = sort(individuals.fitness);
          individuals.chrome(i,:) = individuals.chrome(code_index(1),:);
@@ -67,9 +67,9 @@ for k = 1:1   %å¯ä»¥è®¾ç½®é‡å¤æ•°
     end
     individuals.fitness = fitness;
     
-    %æ‰¾æœ€å¥½çš„æŸ“è‰²ä½¿
-    [bestfitness,bestindex]=min(individuals.fitness);%å¾—åˆ°åˆå§‹åŒ–ç§ç¾¤çš„æœ€å¤§çš„é€‚åº”åº¦å‡½æ•°å€¼å’Œä½ç½®ã€‚
-    bestchrome=individuals.chrome(bestindex,:);%é€‚åº”åº¦æœ€å¥½çš„æŸ“è‰²ä½“
+    %ÕÒ×îºÃµÄÈ¾É«Ê¹
+    [bestfitness,bestindex]=min(individuals.fitness);%µÃµ½³õÊ¼»¯ÖÖÈºµÄ×î´óµÄÊÊÓ¦¶Èº¯ÊıÖµºÍÎ»ÖÃ¡£
+    bestchrome=individuals.chrome(bestindex,:);%ÊÊÓ¦¶È×îºÃµÄÈ¾É«Ìå
     individuals.fitness = 1./individuals.fitness;
     sumfitness = sum(individuals.fitness);
     fmax = max(individuals.fitness);
@@ -77,17 +77,17 @@ for k = 1:1   %å¯ä»¥è®¾ç½®é‡å¤æ•°
 
     for i = 1:gensize
 
-        num = i;%è®¡æ•°
-        individuals = select(popsize,individuals,sumfitness,1);%é€‰æ‹©
+        num = i;%¼ÆÊı
+        individuals = select(popsize,individuals,sumfitness,1);%Ñ¡Ôñ
 
-        individuals.chrome = GA_cross(lenchrome,individuals,popsize,LB,UB,num,fmax,favg,5);%äº¤å‰
+        individuals.chrome = GA_cross(lenchrome,individuals,popsize,LB,UB,num,fmax,favg,5);%½»²æ
 
-        individuals.chrome = GA_mutation(popsize,individuals,fmax,favg,lenchrome,LB,UB,[1 gensize],num,5);%å˜å¼‚
+        individuals.chrome = GA_mutation(popsize,individuals,fmax,favg,lenchrome,LB,UB,[1 gensize],num,5);%±äÒì
 
-        %è®¡ç®—é€‚åº”åº¦
+        %¼ÆËãÊÊÓ¦¶È
         for j = 1:popsize
             x=individuals.chrome(j,:);
-            individuals.fitness(j)=searchfun(x,vsb,g0,2);%è®¡ç®—æŸ“è‰²ä½“é€‚åº”åº¦
+            individuals.fitness(j)=searchfun(x,vsb,g0,2);%¼ÆËãÈ¾É«ÌåÊÊÓ¦¶È
         end
         sumfitness = sum(individuals.fitness);
         favg = sumfitness/popsize;
@@ -98,9 +98,9 @@ for k = 1:1   %å¯ä»¥è®¾ç½®é‡å¤æ•°
         end
         individuals.fitness = fitness;
         [newbestfitness,newbestindex] = min(individuals.fitness);
-        if bestfitness >=newbestfitness%æ¯”è¾ƒæœ€ä¼˜é€‚åº”åº¦
+        if bestfitness >=newbestfitness%±È½Ï×îÓÅÊÊÓ¦¶È
            bestfitness = newbestfitness; 
-           bestchrome = individuals.chrome(newbestindex,:);%å½“å‰æœ€ä¼˜çš„å‚æ•°  
+           bestchrome = individuals.chrome(newbestindex,:);%µ±Ç°×îÓÅµÄ²ÎÊı  
         end
 
         sumfitness = sum(individuals.fitness);
@@ -120,12 +120,12 @@ for k = 1:1   %å¯ä»¥è®¾ç½®é‡å¤æ•°
  end
 
 bestchrome = chrome;
-disp(bestchrome);%æœ€åä¸€ä¸ªbestchrome
+disp(bestchrome);%×îºóÒ»¸öbestchrome
 
 %% Save Workspace
 x = bestchrome(end,:);
-%% æµ‹è¯•
-% options = optimoptions(@fminunc,'Algorithm','quasi-newton');%è®¾ç½®é«˜æ–¯ç‰›é¡¿æ³•æ±‚è§£
+%% ²âÊÔ
+% options = optimoptions(@fminunc,'Algorithm','quasi-newton');%ÉèÖÃ¸ßË¹Å£¶Ù·¨Çó½â
 % [QN]= fminunc(@(x)searchfun(x,vsb,g0,2),x0,options);
 C = mAccCaliDescent(vsb',([x0(4),0,x0(5),0,0,x0(6),x0(1:3)])',g0,2,2);
 x2 = [C.X(7) C.X(8) C.X(9) C.X(1) C.X(3) C.X(6) C.X(2) C.X(4) C.X(5)];
@@ -135,10 +135,10 @@ module_value2 = static_pos(x2,testda,2);
 calibrate_before_module_value=sqrt(sum(testda.^2,2));
 [vas1,stdvas1,mmvas1]=slideVarStd(module_value1,800);
 [vas2,stdvas2,mmvas2]=slideVarStd(module_value2,800);
-[vas4,stdvas4,mmvas4]=slideVarStd(calibrate_before_module_value,1000);
+[vas4,stdvas4,mmvas4]=slideVarStd(calibrate_before_module_value,800);
 
-%% æ•°æ®åˆ†æ
-%% æµ‹è¯•æ•°æ®å¯¹æ¯” 
+%% Êı¾İ·ÖÎö
+%% ²âÊÔÊı¾İ¶Ô±È 
 testda = testda';L = length(testda);
 RMSE_before = sqrt(sum((sqrt(testda(1,:).^2+testda(2,:).^2+testda(3,:).^2)-g0).^2)/L)/g0;
 
@@ -161,10 +161,10 @@ tbg = Kag*tsbg;
 tbg(1,:)=tbg(1,:)-biasg(1); tbg(2,:)=tbg(2,:)-biasg(2); tbg(3,:)=tbg(3,:)-biasg(3);
 RMSE_G_after = sqrt(sum((sqrt(tbg(1,:).^2+tbg(2,:).^2+tbg(3,:).^2)-g0).^2)/L)/g0;
 
-%% ç”»å›¾åˆ†æ
+%% »­Í¼·ÖÎö
 figure('Color',[1 1 1]);
 set(gcf,'unit','centimeters','position',[13 9 10 7]);
-set(gca,'looseInset',[0 0 0 0]) %å»ç™½è¾¹
+set(gca,'looseInset',[0 0 0 0]) %È¥°×±ß
 plot((1:length(mmvas2))/400,mmvas2,'b','Linewidth',2)
 hold on
 plot((1:length(mmvas2))/400,mmvas1,'k','Linewidth',2)
@@ -172,58 +172,58 @@ hold on
 plot((1:length(mmvas2))/400,repmat(g0,1,length(mmvas1)),'r','Linewidth',2)
 hold on 
 plot((1:length(mmvas2))/400,mmvas4,'g','Linewidth',2)
-legend('\fontsize{10}\fontname{å®‹ä½“}ç»å…¸ç‰›é¡¿æ³•','\fontsize{10}\fontname{å®‹ä½“}æœ¬æ–‡æ–¹æ³•','\fontsize{10}\fontname{å®‹ä½“}å½“åœ°é‡åŠ›çœŸå€¼','\fontsize{10}\fontname{å®‹ä½“}æ ‡å®šå‰æ¨¡å€¼');
-xlabel('\fontsize{10}\fontname{å®‹ä½“}æ—¶é—´(s)'); %fontsizeç”¨æ¥è®¾ç½®å­—ä½“å¤§å°ï¼Œfontnameç”¨æ¥è®¾ç½®å­—ä½“
-ylabel('\fontsize{10}\fontname{å®‹ä½“}åŠ é€Ÿåº¦å€¼ï¼ˆm/s^2ï¼‰');
+legend('\fontsize{10}\fontname{ËÎÌå}¾­µäÅ£¶Ù·¨','\fontsize{10}\fontname{ËÎÌå}±¾ÎÄ·½·¨','\fontsize{10}\fontname{ËÎÌå}µ±µØÖØÁ¦ÕæÖµ','\fontsize{10}\fontname{ËÎÌå}±ê¶¨Ç°Ä£Öµ');
+xlabel('\fontsize{10}\fontname{ËÎÌå}Ê±¼ä(s)'); %fontsizeÓÃÀ´ÉèÖÃ×ÖÌå´óĞ¡£¬fontnameÓÃÀ´ÉèÖÃ×ÖÌå
+ylabel('\fontsize{10}\fontname{ËÎÌå}¼ÓËÙ¶ÈÖµ£¨m/s^2£©');
 grid on;
 
 figure('Color',[1 1 1]);
 set(gcf,'unit','centimeters','position',[13 9 10 7]);
-set(gca,'looseInset',[0 0 0 0]) %å»ç™½è¾¹
-plot(af(101:200),'b','Linewidth',2);
+set(gca,'looseInset',[0 0 0 0]) %È¥°×±ß
+plot(af,'b','Linewidth',2);
 hold on;
-plot(bf(101:200),'k','Linewidth',2);
-xlabel('\fontsize{10}\fontname{å®‹ä½“}è¿­ä»£æ¬¡æ•°'); %fontsizeç”¨æ¥è®¾ç½®å­—ä½“å¤§å°ï¼Œfontnameç”¨æ¥è®¾ç½®å­—ä½“
-ylabel('\fontsize{10}\fontname{å®‹ä½“}æœ€ä¼˜é€‚åº”åº¦å€¼');
-legend('\fontsize{10}\fontname{å®‹ä½“}å¹³å‡é€‚åº”åº¦å€¼','\fontsize{10}\fontname{å®‹ä½“}æœ€ä½³é€‚åº”åº¦å€¼');
+plot(bf,'k','Linewidth',2);
+xlabel('\fontsize{10}\fontname{ËÎÌå}µü´ú´ÎÊı'); %fontsizeÓÃÀ´ÉèÖÃ×ÖÌå´óĞ¡£¬fontnameÓÃÀ´ÉèÖÃ×ÖÌå
+ylabel('\fontsize{10}\fontname{ËÎÌå}×îÓÅÊÊÓ¦¶ÈÖµ');
+legend('\fontsize{10}\fontname{ËÎÌå}Æ½¾ùÊÊÓ¦¶ÈÖµ','\fontsize{10}\fontname{ËÎÌå}×î¼ÑÊÊÓ¦¶ÈÖµ');
 grid on;
 
 figure('Color',[1 1 1]);
 set(gcf,'unit','centimeters','position',[13 9 10 7]);
-set(gca,'looseInset',[0 0 0 0]) %å»ç™½è¾¹
-plot(navs(101:200,1),'b','Linewidth',2);
+set(gca,'looseInset',[0 0 0 0]) %È¥°×±ß
+plot(navs(:,1),'b','Linewidth',2);
 hold on;
-plot(navs(101:200,2),'k','Linewidth',2);
+plot(navs(:,2),'k','Linewidth',2);
 hold on;
-plot(navs(101:200,3),'r--','Linewidth',2);
+plot(navs(:,3),'r--','Linewidth',2);
 legend('\fontsize{10}\fontname{Times New Roman}B_x','\fontsize{10}\fontname{Times New Roman}B_y','\fontsize{10}\fontname{Times New Roman}B_z');
-xlabel('\fontsize{10}\fontname{å®‹ä½“}ç§ç¾¤ä»£æ•°'); %fontsizeç”¨æ¥è®¾ç½®å­—ä½“å¤§å°ï¼Œfontnameç”¨æ¥è®¾ç½®å­—ä½“
-ylabel('\fontsize{10}\fontname{å®‹ä½“}é›¶åå€¼ï¼ˆm/s^2ï¼‰');
+xlabel('\fontsize{10}\fontname{ËÎÌå}ÖÖÈº´úÊı'); %fontsizeÓÃÀ´ÉèÖÃ×ÖÌå´óĞ¡£¬fontnameÓÃÀ´ÉèÖÃ×ÖÌå
+ylabel('\fontsize{10}\fontname{ËÎÌå}ÁãÆ«Öµ£¨m/s^2£©');
 grid on;
 
 figure('Color',[1 1 1]);
 set(gcf,'unit','centimeters','position',[13 9 10 7]);
-set(gca,'looseInset',[0 0 0 0]) %å»ç™½è¾¹
-plot(navs(101:200,4),'b','Linewidth',2);
+set(gca,'looseInset',[0 0 0 0]) %È¥°×±ß
+plot(navs(:,4),'b','Linewidth',2);
 hold on;
-plot(navs(101:200,5),'k','Linewidth',2);
+plot(navs(:,5),'k','Linewidth',2);
 hold on;
-plot(navs(101:200,6),'r--','Linewidth',2);
+plot(navs(:,6),'r--','Linewidth',2);
 axis on;
 legend('\fontsize{10}\fontname{Times New Roman}S_{xx}','\fontsize{10}\fontname{Times New Roman}S_{yy}','\fontsize{10}\fontname{Times New Roman}S_{zz}');
-xlabel('\fontsize{10}\fontname{å®‹ä½“}ç§ç¾¤ä»£æ•°'); %fontsizeç”¨æ¥è®¾ç½®å­—ä½“å¤§å°ï¼Œfontnameç”¨æ¥è®¾ç½®å­—ä½“
-ylabel('\fontsize{10}\fontname{å®‹ä½“}æ ‡åº¦å› å­å€¼');
+xlabel('\fontsize{10}\fontname{ËÎÌå}ÖÖÈº´úÊı'); %fontsizeÓÃÀ´ÉèÖÃ×ÖÌå´óĞ¡£¬fontnameÓÃÀ´ÉèÖÃ×ÖÌå
+ylabel('\fontsize{10}\fontname{ËÎÌå}±ê¶ÈÒò×ÓÖµ');
 grid on;
 
 figure('Color',[1 1 1]);
 set(gcf,'unit','centimeters','position',[13 9 10 7]);
-set(gca,'looseInset',[0 0 0 0]) %å»ç™½è¾¹
-plot(navs(101:200,7),'b','Linewidth',2);
+set(gca,'looseInset',[0 0 0 0]) %È¥°×±ß
+plot(navs(:,7),'b','Linewidth',2);
 hold on;
-plot(navs(101:200,8),'k','Linewidth',2);
+plot(navs(:,8),'k','Linewidth',2);
 hold on;
-plot(navs(101:200,9),'r--','Linewidth',2);
+plot(navs(:,9),'r--','Linewidth',2);
 legend('\fontsize{10}\fontname{Times New Roman}M_{xx}','\fontsize{10}\fontname{Times New Roman}M_{yy}','\fontsize{10}\fontname{Times New Roman}M_{zz}');
-xlabel('\fontsize{10}\fontname{å®‹ä½“}ç§ç¾¤ä»£æ•°'); %fontsizeç”¨æ¥è®¾ç½®å­—ä½“å¤§å°ï¼Œfontnameç”¨æ¥è®¾ç½®å­—ä½“
-ylabel('\fontsize{10}\fontname{å®‹ä½“}éæ­£äº¤è¯¯å·®å€¼');
+xlabel('\fontsize{10}\fontname{ËÎÌå}ÖÖÈº´úÊı'); %fontsizeÓÃÀ´ÉèÖÃ×ÖÌå´óĞ¡£¬fontnameÓÃÀ´ÉèÖÃ×ÖÌå
+ylabel('\fontsize{10}\fontname{ËÎÌå}·ÇÕı½»Îó²îÖµ');
 grid on;

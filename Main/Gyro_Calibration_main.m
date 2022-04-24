@@ -1,6 +1,6 @@
 clc;
 clear ;
-load('Data\test9250_04.txt')
+load('test9250_04.txt')
 dt=1/200;
 pos0 = [31.303996*pi/180;120.6195853*pi/180;12.34];  %实验室当地经纬度
 global glv 
@@ -111,7 +111,113 @@ roll0 = atan2(-mean(fbib(1,1:3500)), mean(fbib(3,1:3500)));
 avp0=[pitch0;roll0;0;zeros(3,1);pos0];
 res1inpure = ins_inpure([ wbib1' *pi/180, fbib',imu0(:,end)],avp0);
 res2inpure = ins_inpure([ wbib2' *pi/180, fbib',imu0(:,end)],avp0);
+resInpurebefore =  ins_inpure([imu0(:,1:3)*pi/180, imu0(:,4:6),imu0(:,end)],avp0);
 
 imuerr = imuerrset(3,1000,0.03,100);
 gps = [repmat([0;0;0;pos0;2]',length(imu0),1),imu0(:,end)];
 ref =  smooth_TKF([ imu0(:,1:3) *pi/180, imu0(:,4:end)],gps,davp,imuerr,avp0); %此处应该用已校正的数据
+
+%% 
+t = imu0(:,end);
+figure('Color',[1 1 1]);
+set(gcf,'unit','centimeters','position',[13 9 10 7]);
+set(gca,'looseInset',[0 0 0 0]) %去白边
+plot(t,ref.xs(:,1)*180/pi,'r','Linewidth',2);
+hold on 
+plot(t,res2inpure.avp(:,1)*180/pi,'b:','Linewidth',2);grid on
+hold on 
+plot(t,res1inpure.avp(:,1)*180/pi,'m--','Linewidth',2);grid on
+legend('\fontsize{10}\fontname{宋体}参考值','\fontsize{10}\fontname{宋体}传统方法','\fontsize{10}\fontname{宋体}两步修正法');
+ylabel('\fontsize{10}\fontname{宋体}俯仰角(°)')
+xlabel('\fontsize{10}\fontname{宋体}时间/s') %fontsize用来设置字体大小，fontname用来设置字体
+
+figure('Color',[1 1 1]);
+set(gcf,'unit','centimeters','position',[13 9 10 7]);
+set(gca,'looseInset',[0 0 0 0]) %去白边
+plot(t,ref.xs(:,2)*180/pi,'r','Linewidth',2);
+hold on 
+plot(t,res2inpure.avp(:,2)*180/pi,'b:','Linewidth',2);grid on
+hold on 
+plot(t,res1inpure.avp(:,2)*180/pi,'m--','Linewidth',2);grid on
+legend('\fontsize{10}\fontname{宋体}参考值','\fontsize{10}\fontname{宋体}传统方法','\fontsize{10}\fontname{宋体}两步修正法');
+ylabel('\fontsize{10}\fontname{宋体}横滚角(°)')
+xlabel('\fontsize{10}\fontname{宋体}时间/s') %fontsize用来设置字体大小，fontname用来设置字体
+
+
+%% 
+figure('Color',[1 1 1]);
+set(gcf,'unit','centimeters','position',[13 9 10 7]);
+set(gca,'looseInset',[0 0 0 0]) %去白边
+plot(t,ref.xs(:,1)*180/pi,'r','Linewidth',2);
+hold on 
+plot(t,resInpurebefore.avp(:,1)*180/pi,'b:','Linewidth',2);grid on
+hold on 
+plot(t,res1inpure.avp(:,1)*180/pi,'m--','Linewidth',2);grid on
+legend('\fontsize{10}\fontname{宋体}参考值','\fontsize{10}\fontname{宋体}标定前','\fontsize{10}\fontname{宋体}标定后');
+ylabel('\fontsize{10}\fontname{宋体}俯仰角(°)')
+xlabel('\fontsize{10}\fontname{宋体}时间/s') %fontsize用来设置字体大小，fontname用来设置字体
+
+figure('Color',[1 1 1]);
+set(gcf,'unit','centimeters','position',[13 9 10 7]);
+set(gca,'looseInset',[0 0 0 0]) %去白边
+plot(t,ref.xs(:,2)*180/pi,'r','Linewidth',2);
+hold on 
+plot(t,resInpurebefore.avp(:,2)*180/pi,'b:','Linewidth',2);grid on
+hold on 
+plot(t,res1inpure.avp(:,2)*180/pi,'m--','Linewidth',2);grid on
+legend('\fontsize{10}\fontname{宋体}参考值','\fontsize{10}\fontname{宋体}标定前','\fontsize{10}\fontname{宋体}标定后');
+ylabel('\fontsize{10}\fontname{宋体}横滚角(°)')
+xlabel('\fontsize{10}\fontname{宋体}时间/s') %fontsize用来设置字体大小，fontname用来设置字体
+%% 
+marker_idx = 1:5000:length(CalibrateResult1.avp(:,end));
+figure('Color',[1 1 1]);
+set(gcf,'unit','centimeters','position',[13 9 10 7]);
+set(gca,'looseInset',[0 0 0 0]) %去白边
+plot(CalibrateResult1.avp(:,end),CalibrateResult1.xkpk(:,10),'bx-','MarkerIndices',marker_idx,'Linewidth',2);hold on;
+plot(CalibrateResult1.avp(:,end),CalibrateResult1.xkpk(:,11),'g+-','MarkerIndices',marker_idx,'Linewidth',2);hold on;
+plot(CalibrateResult1.avp(:,end),CalibrateResult1.xkpk(:,12),'rs-','MarkerIndices',marker_idx,'Linewidth',2);hold on;
+plot(CalibrateResult1.avp(:,end),CalibrateResult1.xkpk(:,13),'cd-','MarkerIndices',marker_idx,'Linewidth',2);hold on;
+plot(CalibrateResult1.avp(:,end),CalibrateResult1.xkpk(:,14),'mo-','MarkerIndices',marker_idx,'Linewidth',2);hold on;
+plot(CalibrateResult1.avp(:,end),CalibrateResult1.xkpk(:,15),'yp-','MarkerIndices',marker_idx,'Linewidth',2);hold on;
+grid on;
+legend('\fontsize{10}\fontname{Times New Roman}k12','\fontsize{10}\fontname{Times New Roman}k13','\fontsize{10}\fontname{Times New Roman}k21','\fontsize{10}\fontname{Times New Roman}k23','\fontsize{10}\fontname{Times New Roman}k31','\fontsize{10}\fontname{Times New Roman}k32')
+ylabel('\fontsize{10}\fontname{宋体}非正交误差估计值')
+xlabel('\fontsize{10}\fontname{宋体}时间/s') %fontsize用来设置字体大小，fontname用来设置字体
+
+figure('Color',[1 1 1]);
+set(gcf,'unit','centimeters','position',[13 9 10 7]);
+set(gca,'looseInset',[0 0 0 0]) %去白边
+plot(CalibrateResult1.avp(:,end),CalibrateResult1.xkpk(:,25),'bx-','MarkerIndices',marker_idx,'Linewidth',2);hold on;
+plot(CalibrateResult1.avp(:,end),CalibrateResult1.xkpk(:,26),'g+-','MarkerIndices',marker_idx,'Linewidth',2);hold on;
+plot(CalibrateResult1.avp(:,end),CalibrateResult1.xkpk(:,27),'rs-','MarkerIndices',marker_idx,'Linewidth',2);hold on;
+plot(CalibrateResult1.avp(:,end),CalibrateResult1.xkpk(:,28),'cd-','MarkerIndices',marker_idx,'Linewidth',2);hold on;
+plot(CalibrateResult1.avp(:,end),CalibrateResult1.xkpk(:,29),'mo-','MarkerIndices',marker_idx,'Linewidth',2);hold on;
+plot(CalibrateResult1.avp(:,end),CalibrateResult1.xkpk(:,30),'yp-','MarkerIndices',marker_idx,'Linewidth',2);hold on;
+grid on;
+ylabel('\fontsize{10}\fontname{宋体}单位：度(°)')
+legend('k12','k13','k21','k23','k31','k32')
+legend({'$$\sqrt{P11}$$','$$\sqrt{P22}$$','$$\sqrt{P33}$$','$$\sqrt{P44}$$','$$\sqrt{P55}$$','$$\sqrt{P66}$$'},'interpreter','latex')
+xlabel('\fontsize{10}\fontname{宋体}时间/s') %fontsize用来设置字体大小，fontname用来设置字体
+%% 
+marker_idx = 1:5000:length(data);
+figure('Color',[1 1 1]);
+set(gcf,'unit','centimeters','position',[13 9 10 7]);
+set(gca,'looseInset',[0 0 0 0]) %去白边
+plot(data(:,4),'bx-','MarkerIndices',marker_idx,'Linewidth',2);hold on;
+plot(data(:,5),'go-','MarkerIndices',marker_idx,'Linewidth',2);hold on;
+plot(data(:,6),'r--','MarkerIndices',marker_idx,'Linewidth',2);hold on;
+grid on;
+ylabel('\fontsize{10}\fontname{Times New Roman}m/s^2')
+legend('\fontsize{10}\fontname{Times New Roman}x','\fontsize{10}\fontname{Times New Roman}y','\fontsize{10}\fontname{Times New Roman}z')
+xlabel('\fontsize{10}\fontname{宋体}采样时刻')
+
+figure('Color',[1 1 1]);
+set(gcf,'unit','centimeters','position',[13 9 10 7]);
+set(gca,'looseInset',[0 0 0 0]) %去白边
+plot(data(:,1),'bx-','MarkerIndices',marker_idx,'Linewidth',2);hold on;
+plot(data(:,2),'go-','MarkerIndices',marker_idx,'Linewidth',2);hold on;
+plot(data(:,3),'r--','MarkerIndices',marker_idx,'Linewidth',2);hold on;
+grid on;
+ylabel('\fontsize{10}\fontname{Times New Roman} °/s')
+legend('\fontsize{10}\fontname{Times New Roman}x','\fontsize{10}\fontname{Times New Roman}y','\fontsize{10}\fontname{Times New Roman}z')
+xlabel('\fontsize{10}\fontname{宋体}采样时刻')

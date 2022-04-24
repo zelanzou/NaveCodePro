@@ -22,14 +22,12 @@ davp0 = avpseterr([60;-60;60], [0.1;0.1;0.1], [2.5;2.5;2.5]); %初始误差
 %方式，用已有的gps误差，等倍数放大
 avpmg = interp1(trj.avp(:,end), trj.avp,gps(:,8),'linear');  %线性插值
 
-errgps = fplot([avpmg(:,1:3) gps(:,[1:6,end])],[avpmg,gps(:,8)],1);
-
 gps(1000:1050,1:6) = gps(1000:1050,1:6) +5*(avpmg(1000:1050,4:9)- gps(1000:1050,1:6));
 
 gps(2200:2220,1:6) = gps(2200:2220,1:6)  +8*(avpmg(2200:2220,4:9)- gps(2200:2220,1:6));
 
 gps(1500:1510,6) =gps(1500:1510,6) +10*(avpmg(1500:1510,6)- gps(1500:1510,6));
-
+errgps = fplot([avpmg(:,1:3) gps(:,[1:6,end])],[avpmg,gps(:,8)],0);
 %%Algorithm development
 tic
 resArkf = RobustKf(imu,gps,davp0,imuerr,avp0);
@@ -46,7 +44,7 @@ resTkf =  kf(imu,gps,davp0,imuerr,avp0);
 
 
 %%计算误差
-errArkf  = fplot(resArkf .avp,trj.avp,1);
+errArkf  = fplot(resArkf .avp,trj.avp,0);
 errBayes = fplot(resBayes.avp,trj.avp,0);
 errTkf =  fplot(resTkf .avp,trj.avp,0);
 errMrkf =  fplot(resMrkf .avp,trj.avp,0);

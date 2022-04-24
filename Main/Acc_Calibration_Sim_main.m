@@ -7,7 +7,7 @@
 clc;                                                 % clear cmd text
 clear;                                              % clear all RAM
 
-load('data\AccBiasSimu.mat');
+load('AccBiasSimu.mat');
 g0 = 9.794281725483827;
 mmg=g0*10^(-3);
 global Vsb;

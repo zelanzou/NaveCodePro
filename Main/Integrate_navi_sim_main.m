@@ -13,8 +13,7 @@ avpmg = interp1(trjRbs.imu(:,end), trjRbs.avp,gps(:,8),'linear');  %线性插值
 %添加误差
 gps(320:332,1:6) =  gps(320:332,1:6) +5*(avpmg(320:332,4:9)-gps(320:332,1:6));
 gps(450:470,1:6) =  gps(450:470,1:6) +10*(avpmg(450:470,4:9)-gps(450:470,1:6));
-insplot([trjRbs.avp,trjRbs.imu(:,end)]);
-
+errgps = fplot([avpmg(:,1:3) gps(:,[1:6,end])],[avpmg,gps(:,8)],0);
 %%  正常组合导航
 avp0 = trjRbs.avp0;
 davp0 = avpseterr([-2160;2520;-600], [0.3;0.3;0.3],[2;2;2]);%用来设置P,速度位置的参数对kf是最佳的，上面参数就不行

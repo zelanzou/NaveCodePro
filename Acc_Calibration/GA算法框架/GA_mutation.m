@@ -1,6 +1,8 @@
-function ret = mutation(popsize,individuals,fmax,favg,lenchrome,LB,UB,pop,num,flag3)
+function ret = GA_mutation(popsize,individuals,fmax,favg,lenchrome,LB,UB,pop,num,flag3)
+ %d = 0;
+%     p = [];k=0;
 	for i = 1:popsize
-		pick=rand;%随机产生变异概率
+		pick=rand;%随机产生变异位置
 		while pick==0
 			pick=rand;
 		end
@@ -16,14 +18,16 @@ function ret = mutation(popsize,individuals,fmax,favg,lenchrome,LB,UB,pop,num,fl
 				pm = HIAGA_mutation(individuals,fmax,favg,index);%异性自适应变异算子
 			case 5 
 				pm = TIAGA_mutation(individuals,fmax,favg,index,num);%迭代自适应变异算子	
-		end
+        end
+%         p = [p,pm];查看变异算子概率
         pick=0.1*rand;%产生一个随机概率 pm在0.01-0.05之间，直接用rand太大，导致种群基本无变异
 		while pick==0
 			pick=rand;
 		end
 		if pick >pm      %如果产生的随机概率大于变异概率，那么此轮循环不变异，类似于交叉，变异是小概率事件
 			continue;
-		end
+        end
+%         k = k+1
 		flag=0;
 		while flag==0
 			pick=rand;%随机产生不为0的随机变异位置
@@ -41,7 +45,8 @@ function ret = mutation(popsize,individuals,fmax,favg,lenchrome,LB,UB,pop,num,fl
 			else
 				delta=v1*(1-pick^((1-pop(1)/pop(2))^2));
 				individuals.chrome(i,pos)=v-delta;
-			end %变异结束			
+			end %变异结束
+%            d= d+1
 			flag=test(lenchrome,LB,UB,individuals.chrome(i,:));
 		end
 	end
@@ -49,12 +54,12 @@ function ret = mutation(popsize,individuals,fmax,favg,lenchrome,LB,UB,pop,num,fl
 end
 
 function res  = SGA_mutation()
-	pm = 0.1;%变异概率
+	pm = 0.01;%变异概率
 	res = pm;
 end
 
 function res  = AGA_mutation(individuals,fmax,favg,index)
-	k3=0.1;k4=0.1; 
+	k3=0.05;k4=0.03; 
 	f = individuals.fitness(index);
 	if f >= favg
         pm = k3*(fmax-f)/(fmax-favg);
@@ -65,7 +70,7 @@ function res  = AGA_mutation(individuals,fmax,favg,index)
 end
 
 function res  = IAGA_mutation(individuals,fmax,favg,index)
-	pm1=0.1; pm2=0.01;
+	pm1=0.1; pm2=0.03;
 	f = individuals.fitness(index);
 	if f >= favg
         pm = pm1-(pm1-pm2)*(fmax-f)/(fmax-favg);
@@ -88,7 +93,7 @@ function res  = HIAGA_mutation(individuals,fmax,favg,index)
 end
 
 function res  = TIAGA_mutation(individuals,fmax,favg,index,num)
-	phi = 0.1; pm2 = 0.01;
+	phi = 0.1; pm2 = 0.05;
 	f = individuals.fitness(index);
 	alpha = (f - favg)/(fmax-favg);
 	pm1 = phi - 0.1/(2+0.8*log10(num));

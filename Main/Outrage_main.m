@@ -22,9 +22,6 @@ avp0 = trj.avp(1,:)';
 
 imuerr = imuerrset(3, 1000, 0.03, 100);
 davp0 = avpseterr([60;-60;60], [1;1;1], [2.5;2.5;2.5]); %初始误差
-Rmin
-Rmax
 %-----------------------可以加入Outrage_Solution中的其他算法---------------------/
-result = VmP_NHC_RTS(imu,gps,davp,imuerr,avp0);
-
+res= VmP_NHC_RTS(imu,gps,davp0,imuerr,avp0);
 errres = fplot(res.avp,trj.avp,1); %均以弧度单位传入
