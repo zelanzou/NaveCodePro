@@ -46,7 +46,6 @@ for i = 2:N
         t(i) = imu(i,end);
         %% 惯导更新
         [att,vel,pos,qua,Cnb] = avp_update(wbib,fb,Cnb,qua,pos,vel,dt);
-%         eth = EarthParameter(pos,vel);%更新当前时刻的曲率半径
         if k<=L_GNSS && gnss(k,end)<=imu(i,end)
             Z = [vel;pos]-gnss(k,1:6)';H = [zeros(6,3) eye(6),zeros(6,6)];
             kf = ukf_filter(kf,[att;vel;pos;],imu(i,1:6),gamma,Wm,Wc,dt,1,Z,H);

@@ -1,10 +1,10 @@
 function module_value = static_pos(x,fs,flag)
-% g0 = 9.794731130106427;
+% 计算标定后的校正数据
+%fs: 3*N
     Ka = [x(4),  0,   0
           x(7), x(5), 0
           x(8), x(9), x(6)];
     bias = [x(1) x(2) x(3)];
-    fs = fs';
      switch(flag)
 		case 1 %模型1
 			fb = Ka*fs;
